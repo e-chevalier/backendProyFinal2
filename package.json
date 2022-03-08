@@ -8,12 +8,16 @@
   "dependencies": {
     "cors": "^2.8.5",
     "dotenv": "^16.0.0",
-    "express": "^4.17.2"
+    "express": "^4.17.2",
+    "mongoose": "^6.2.4"
   },
   "scripts": {
     "dev": "nodemon server.js",
     "start": "node server.js"
   },
   "type": "module",
-  "description": ""
+  "description": "",
+  "devDependencies": {
+    "nodemon": "^2.0.15"
+  }
 }
