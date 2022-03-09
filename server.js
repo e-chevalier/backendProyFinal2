@@ -131,4 +131,7 @@ containerMongo.save({
   })
 
   console.log(await containerMongo.getById(2))
-  console.log(await containerMongo.getAll())
+  //console.log(await containerMongo.getAll())
+  //console.log(await containerMongo.deleteById(2))
+  //console.log(await containerMongo.deleteAll())
+  console.log(await containerMongo.updateById(3, {title: 'Brócoliiiii', price: 99}))

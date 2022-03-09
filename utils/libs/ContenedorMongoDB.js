@@ -72,47 +72,39 @@ class ContenedorMongoDB {
         }
     }
 
-    // /**
-    //  * Método que elimina del archivo el objeto indicado en el parametro ID
-    //  * @param {*} id 
-    //  */
-    // async deleteById( id ) {
+    /**
+     * Método que elimina del archivo el objeto indicado en el parametro ID
+     * @param {*} id 
+     */
+    async deleteById( id ) {
 
-    //     try {
-    //         const productos = await this.getAll()
-    //         await fs.promises.writeFile(this.fileName, JSON.stringify(productos.filter( prod => prod.id != id), null, 2))
+        try {
+            await this.db.deleteOne({'id': id})
+        } catch (error) {
+            console.log(error)
+        }
 
-    //     } catch (error) {
-    //         console.log(error)
-    //     }
+    }
 
-    // }
+    /**
+     * Método que elimina todos los objetos presentes en el archivo.
+     */
+    async deleteAll() {
+        try {
+            await this.db.deleteMany({})           
+        } catch (error) {
+            console.log(error)
+        }
 
-    // /**
-    //  * Método que elimina todos los objetos presentes en el archivo.
-    //  */
-    // async deleteAll() {
-    //     try {
-    //         await fs.promises.writeFile(this.fileName, JSON.stringify([], null, 2))            
-    //     } catch (error) {
-    //         console.log(error)
-    //     }
+    }
 
-    // }
-
-    // async updateById(id, prod) {
-    //     try {
-    //         const productos = await this.getAll()
-    //         let index = productos.findIndex(prod => prod.id == id)
-    //         if ( index >= 0) {
-    //             prod.id = id
-    //             productos[index] = prod
-    //             await fs.promises.writeFile(this.fileName, JSON.stringify(productos, null, 2))
-    //         }  
-    //     } catch (error) {
-    //         console.log(error)   
-    //     }
-    // }
+    async updateById(id, prod) {
+        try {
+            await this.db.findOneAndUpdate({'id': id}, prod)
+        } catch (error) {
+            console.log(error)   
+        }
+    }
 
 }
 
