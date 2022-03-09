@@ -143,7 +143,9 @@ class ContenedorFireBase {
 
     async updateById(id, prod) {
         try {
-            await this.db.collection(this.collectionPath).findOneAndUpdate({ 'id': id }, prod)
+            const snapshot = await this.db.collection(this.collectionPath).where('id', '==', id).get()
+            snapshot.forEach(doc => doc.ref.update(prod))
+
         } catch (error) {
             console.log(error)
         }
