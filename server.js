@@ -2,9 +2,16 @@ import express from 'express'
 import { config } from './config/index.js'
 import { serverRoutes } from './routes/index.js'
 import cors from 'cors'
+
+// MONOGODB ATLAS CONNECTION
 import { connectMongodbAtlas } from './utils/mongodbAtlas/mongodbAtlas.js'
+// FIRESTORE
+import { db_firestore } from './utils/firestore/firestore.js'
+
 import * as modelProducts from './models/products.js'
 import { ContenedorMongoDB } from './utils/libs/ContenedorMongoDB.js'
+
+import { ContenedorFireBase } from './utils/libs/ContenedorFireBase.js'
 
 const app = express()
 
@@ -87,51 +94,79 @@ const data = [
 ]
 
 
-await connectMongodbAtlas();
+// await connectMongodbAtlas();
 
-let containerMongo = new ContenedorMongoDB(modelProducts.products)
+// let containerMongo = new ContenedorMongoDB(modelProducts.products)
 
-console.log("INSERT DATA")
+// console.log("INSERT DATA")
 
-if (await modelProducts.products.exists()) {
-    console.log("La collection products ya existe.")
-} else {
-    console.log("No existe la collection products.")
-    //await modelProducts.products.insertMany(data)
-    await containerMongo.save( {
-        "title": "Naranja de Ombligo",
-        "price": 60,
-        "description": "Naranja de Ombligo, presentan unos gajos grandes y generosos en jugo, pero también en fibra insoluble, es decir carnosas, lo que las hace más aptas para naranja de mesa que para hacer zumos. También presentan la ventaja para este fin de que casi nunca tienen las incómodas pepitas que nos encontramos en otras variedades al morder.",
-        "thumbnail": "/assets/img/product/1.jpg",
-        "timestamp": "1644947630919",
-        "code": "Frutas",
-        "qty": 0,
-        "stock": 5
-    })
-}
+// if (await modelProducts.products.exists()) {
+//     console.log("La collection products ya existe.")
+// } else {
+//     console.log("No existe la collection products.")
+//     //await modelProducts.products.insertMany(data)
+//     await containerMongo.save({
+//         "title": "Naranja de Ombligo",
+//         "price": 60,
+//         "description": "Naranja de Ombligo, presentan unos gajos grandes y generosos en jugo, pero también en fibra insoluble, es decir carnosas, lo que las hace más aptas para naranja de mesa que para hacer zumos. También presentan la ventaja para este fin de que casi nunca tienen las incómodas pepitas que nos encontramos en otras variedades al morder.",
+//         "thumbnail": "/assets/img/product/1.jpg",
+//         "timestamp": "1644947630919",
+//         "code": "Frutas",
+//         "qty": 0,
+//         "stock": 5
+//     })
+// }
 
-await modelProducts.products.find().sort({ 'id': 1 }).exec()
-    .then(res => {
-        console.log("----- Productos por ID ascendente:")
-        console.log(res)
-    })
-    .catch((error) => console.log(error))
+// await modelProducts.products.find().sort({ 'id': 1 }).exec()
+//     .then(res => {
+//         console.log("----- Productos por ID ascendente:")
+//         console.log(res)
+//     })
+//     .catch((error) => console.log(error))
 
 
-containerMongo.getMaxid()
-containerMongo.save({
-    "title": "Brócoli",
-    "price": 80,
-    "description": "De color verde profundo e intenso, partiendo de un tallo firme y robusto hasta una particular e inconfundible forma irregular en su copa. El brócoli llega para regalarnos un suave pero distintivo sabor que oscila entre lo amargo y lo dulce.",
-    "thumbnail": "/assets/img/product/7.jpg",
-    "timestamp": 1644947630919,
-    "code": "Verduras",
-    "qty": 0,
-    "stock": 92
-  })
+// containerMongo.getMaxid()
+// containerMongo.save({
+//     "title": "Brócoli",
+//     "price": 80,
+//     "description": "De color verde profundo e intenso, partiendo de un tallo firme y robusto hasta una particular e inconfundible forma irregular en su copa. El brócoli llega para regalarnos un suave pero distintivo sabor que oscila entre lo amargo y lo dulce.",
+//     "thumbnail": "/assets/img/product/7.jpg",
+//     "timestamp": 1644947630919,
+//     "code": "Verduras",
+//     "qty": 0,
+//     "stock": 92
+// })
 
-  console.log(await containerMongo.getById(2))
-  //console.log(await containerMongo.getAll())
-  //console.log(await containerMongo.deleteById(2))
-  //console.log(await containerMongo.deleteAll())
-  console.log(await containerMongo.updateById(3, {title: 'Brócoliiiii', price: 99}))
+//console.log(await containerMongo.getById(2))
+//console.log(await containerMongo.getAll())
+//console.log(await containerMongo.deleteById(2))
+//console.log(await containerMongo.deleteAll())
+//console.log(await containerMongo.updateById(3, { title: 'Brócoliiiii', price: 99 }))
+
+
+
+
+let containerFirebase = new ContenedorFireBase(db_firestore, 'products')
+
+// let newContact = {firstname: "PEPE", lastname: "Lopez", email: "jj@gmail.com", phone: "1231412412"}
+// db_firestore.collection('contacts').add(newContact)
+//         .then( res => console.log(res) )
+//         .catch(err => console.log(err));
+await containerFirebase.save({
+            "title": "Naranja de Ombligo",
+            "price": 60,
+            "description": "Naranja de Ombligo, presentan unos gajos grandes y generosos en jugo, pero también en fibra insoluble, es decir carnosas, lo que las hace más aptas para naranja de mesa que para hacer zumos. También presentan la ventaja para este fin de que casi nunca tienen las incómodas pepitas que nos encontramos en otras variedades al morder.",
+            "thumbnail": "/assets/img/product/1.jpg",
+            "timestamp": "1644947630919",
+            "code": "Frutas",
+            "qty": 0,
+            "stock": 5
+        })
+
+await containerFirebase.getMaxid()
+console.log(await containerFirebase.getById(2))
+console.log(await containerFirebase.getAll())
+console.log(await containerFirebase.deleteById(2))
+// console.log(await containerFirebase.getAll())
+console.log(await containerFirebase.deleteAll())
+// console.log(await containerFirebase.getAll())

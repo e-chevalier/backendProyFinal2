@@ -1,8 +1,9 @@
 
-class ContenedorMongoDB {
+class ContenedorFireBase {
 
-    constructor(db_collection) {
-        this.db = db_collection
+    constructor(db, collectionPath) {
+        this.db = db
+        this.collectionPath = collectionPath
         //this.collName = collectionName
     }
 
@@ -12,9 +13,13 @@ class ContenedorMongoDB {
      */
     async getMaxid() {
         try {
-            let tmp = await this.db.find({}, { 'id': 1, '_id': 0 }).sort({ id: -1 }).limit(1)
-            let res = tmp.length ? tmp[0].id : 0
-            console.log(res)
+            const snapshot = await this.db.collection(this.collectionPath).orderBy('id', 'desc').limit(1).get()
+                .then(data => data.docs.map(prod => ({ id: prod.id, ...prod.data() })))
+
+            console.log(snapshot)
+
+            let res = snapshot.length ? snapshot[0].id : 0
+            console.log("MAXID : " + res)
             return res
 
         } catch (error) {
@@ -31,7 +36,9 @@ class ContenedorMongoDB {
 
         try {
             const max = Number(await this.getMaxid())
-            await this.db.create({ ...obj, id: max + 1 })
+            await this.db.collection(this.collectionPath).add({ ...obj, id: max + 1 })
+                .catch(err => console.log(err));
+
             return max + 1
 
         } catch (error) {
@@ -47,9 +54,10 @@ class ContenedorMongoDB {
      */
     async getById(id) {
         try {
-            let tmp = await this.db.find({ 'id': id }, { '_id': 0, '__v': 0 })
+            const snapshot = await this.db.collection(this.collectionPath).where('id', '==', id).get()
+                .then(data => data.docs.map(prod => ({ id: prod.id, ...prod.data() })))
 
-            let res = tmp.length ? tmp[0] : null
+            let res = snapshot.length ? snapshot[0] : null
             return res
 
         } catch (error) {
@@ -63,9 +71,11 @@ class ContenedorMongoDB {
      */
     async getAll() {
         try {
-           
-            let res = await this.db.find({},{ '_id': 0, '__v': 0 })
-            return res
+
+            const snapshot = await this.db.collection(this.collectionPath).get()
+                .then(data => data.docs.map(prod => ({ id: prod.id, ...prod.data() })))
+
+            return snapshot
 
         } catch (error) {
             console.log(error)
@@ -76,22 +86,55 @@ class ContenedorMongoDB {
      * Método que elimina del archivo el objeto indicado en el parametro ID
      * @param {*} id 
      */
-    async deleteById( id ) {
+    async deleteById(id) {
 
         try {
-            await this.db.deleteOne({'id': id})
+            const snapshot = await this.db.collection(this.collectionPath).where('id', '==', id).get()
+            snapshot.forEach(doc => doc.ref.delete())
+
         } catch (error) {
             console.log(error)
         }
 
     }
 
+
+    async deleteQueryBatch(db, query, resolve) {
+        const snapshot = await query.get();
+
+        const batchSize = snapshot.size;
+        if (batchSize === 0) {
+            // When there are no documents left, we are done
+            resolve();
+            return;
+        }
+
+        // Delete documents in a batch
+        const batch = db.batch();
+        snapshot.docs.forEach((doc) => {
+            batch.delete(doc.ref);
+        });
+        await batch.commit();
+
+        // Recurse on the next process tick, to avoid
+        // exploding the stack.
+        process.nextTick(() => {
+            this.deleteQueryBatch(db, query, resolve);
+        });
+    }
+
+
     /**
      * Método que elimina todos los objetos presentes en el archivo.
      */
     async deleteAll() {
         try {
-            await this.db.deleteMany({})           
+            const query = await this.db.collection(this.collectionPath).orderBy('__name__').limit(25)
+
+            return new Promise((resolve, reject) => {
+                this.deleteQueryBatch(this.db, query, resolve).catch(reject);
+            })
+            
         } catch (error) {
             console.log(error)
         }
@@ -100,12 +143,12 @@ class ContenedorMongoDB {
 
     async updateById(id, prod) {
         try {
-            await this.db.findOneAndUpdate({'id': id}, prod)
+            await this.db.collection(this.collectionPath).findOneAndUpdate({ 'id': id }, prod)
         } catch (error) {
-            console.log(error)   
+            console.log(error)
         }
     }
 
 }
 
-export { ContenedorMongoDB }
+export { ContenedorFireBase }
