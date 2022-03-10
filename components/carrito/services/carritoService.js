@@ -1,4 +1,4 @@
-import { products, cartsContainer, carts } from '../../../utils/libs/Global.js'
+import { products, cartsContainer, carts } from '../../../containers/Global.js'
 
 class Carrito {
 

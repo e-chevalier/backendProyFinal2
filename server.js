@@ -6,16 +6,14 @@ import cors from 'cors'
 import ProductsDaoFile from './daos/products/ProductsDaoFile.js'
 
 // MONOGODB ATLAS CONNECTION
-import { connectMongodbAtlas } from './utils/mongodbAtlas/mongodbAtlas.js'
+//import { connectMongodbAtlas } from './utils/mongodbAtlas/mongodbAtlas.js'
 // FIRESTORE
-import { db_firestore } from './utils/firestore/firestore.js'
+// import { db_firestore } from './utils/firestore/firestore.js'
 
-import * as modelProducts from './models/products.js'
-import { ContenedorMongoDB } from './utils/libs/ContenedorMongoDB.js'
-
-import { ContenedorFireBase } from './utils/libs/ContenedorFireBase.js'
-
-import { ContenedorMemory } from './utils/libs/ContenedorMemory.js'
+//import * as modelProducts from './models/products.js'
+// import { ContenedorMongoDB } from './containers/ContenedorMongoDB.js'
+// import { ContenedorFireStore } from './containers/ContenedorFireStore.js'
+// import { ContenedorMemory } from './containers/ContenedorMemory.js'
 
 const app = express()
 
@@ -169,7 +167,7 @@ let administrator = true
 
 
 
-// let containerFirebase = new ContenedorFireBase(db_firestore, 'products')
+// let containerFirebase = new ContenedorFireStore(db_firestore, 'products')
 
 // let newContact = {firstname: "PEPE", lastname: "Lopez", email: "jj@gmail.com", phone: "1231412412"}
 // db_firestore.collection('contacts').add(newContact)

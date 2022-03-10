@@ -1,5 +1,5 @@
 
-class ContenedorFireBase {
+class ContenedorFireStore {
 
     constructor(db, collectionPath) {
         this.db = db
@@ -153,4 +153,4 @@ class ContenedorFireBase {
 
 }
 
-export { ContenedorFireBase }
+export { ContenedorFireStore }

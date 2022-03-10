@@ -1,4 +1,4 @@
-import { contenedor, products } from '../../../utils/libs/Global.js'
+import { contenedor, products } from '../../../containers/Global.js'
 
 class Productos {
 
