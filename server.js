@@ -13,6 +13,8 @@ import { ContenedorMongoDB } from './utils/libs/ContenedorMongoDB.js'
 
 import { ContenedorFireBase } from './utils/libs/ContenedorFireBase.js'
 
+import { ContenedorMemory } from './utils/libs/ContenedorMemory.js'
+
 const app = express()
 
 app.use(express.json())
@@ -146,29 +148,83 @@ const data = [
 
 
 
-let containerFirebase = new ContenedorFireBase(db_firestore, 'products')
+// let containerFirebase = new ContenedorFireBase(db_firestore, 'products')
 
 // let newContact = {firstname: "PEPE", lastname: "Lopez", email: "jj@gmail.com", phone: "1231412412"}
 // db_firestore.collection('contacts').add(newContact)
 //         .then( res => console.log(res) )
 //         .catch(err => console.log(err));
-await containerFirebase.save({
-            "title": "Naranja de Ombligo",
-            "price": 60,
-            "description": "Naranja de Ombligo, presentan unos gajos grandes y generosos en jugo, pero también en fibra insoluble, es decir carnosas, lo que las hace más aptas para naranja de mesa que para hacer zumos. También presentan la ventaja para este fin de que casi nunca tienen las incómodas pepitas que nos encontramos en otras variedades al morder.",
-            "thumbnail": "/assets/img/product/1.jpg",
-            "timestamp": "1644947630919",
-            "code": "Frutas",
-            "qty": 0,
-            "stock": 5
-        })
+// await containerFirebase.save({
+//             "title": "Naranja de Ombligo",
+//             "price": 60,
+//             "description": "Naranja de Ombligo, presentan unos gajos grandes y generosos en jugo, pero también en fibra insoluble, es decir carnosas, lo que las hace más aptas para naranja de mesa que para hacer zumos. También presentan la ventaja para este fin de que casi nunca tienen las incómodas pepitas que nos encontramos en otras variedades al morder.",
+//             "thumbnail": "/assets/img/product/1.jpg",
+//             "timestamp": "1644947630919",
+//             "code": "Frutas",
+//             "qty": 0,
+//             "stock": 5
+//         })
 
-await containerFirebase.getMaxid()
-console.log(await containerFirebase.getById(3))
+// await containerFirebase.getMaxid()
+// console.log(await containerFirebase.getById(3))
 // console.log(await containerFirebase.getAll())
 //console.log(await containerFirebase.deleteById(2))
 // console.log(await containerFirebase.getAll())
 // console.log(await containerFirebase.deleteAll())
 // console.log(await containerFirebase.getAll())
-await containerFirebase.updateById(3, {title: 'PEPA LOCA', price: 800})
-console.log(await containerFirebase.getById(3))
+// await containerFirebase.updateById(3, {title: 'PEPA LOCA', price: 800})
+// console.log(await containerFirebase.getById(3))
+
+let containerMemory = new ContenedorMemory()
+
+await containerMemory.save({
+    "title": "Naranja de Ombligo",
+    "price": 60,
+    "description": "Naranja de Ombligo, presentan unos gajos grandes y generosos en jugo, pero también en fibra insoluble, es decir carnosas, lo que las hace más aptas para naranja de mesa que para hacer zumos. También presentan la ventaja para este fin de que casi nunca tienen las incómodas pepitas que nos encontramos en otras variedades al morder.",
+    "thumbnail": "/assets/img/product/1.jpg",
+    "timestamp": "1644947630919",
+    "code": "Frutas",
+    "qty": 0,
+    "stock": 5
+})
+
+await containerMemory.save({
+    "title": "Naranja de Ombligo",
+    "price": 60,
+    "description": "Naranja de Ombligo, presentan unos gajos grandes y generosos en jugo, pero también en fibra insoluble, es decir carnosas, lo que las hace más aptas para naranja de mesa que para hacer zumos. También presentan la ventaja para este fin de que casi nunca tienen las incómodas pepitas que nos encontramos en otras variedades al morder.",
+    "thumbnail": "/assets/img/product/1.jpg",
+    "timestamp": "1644947630919",
+    "code": "Frutas",
+    "qty": 0,
+    "stock": 5
+})
+
+await containerMemory.save({
+    "title": "Naranja de Ombligo",
+    "price": 60,
+    "description": "Naranja de Ombligo, presentan unos gajos grandes y generosos en jugo, pero también en fibra insoluble, es decir carnosas, lo que las hace más aptas para naranja de mesa que para hacer zumos. También presentan la ventaja para este fin de que casi nunca tienen las incómodas pepitas que nos encontramos en otras variedades al morder.",
+    "thumbnail": "/assets/img/product/1.jpg",
+    "timestamp": "1644947630919",
+    "code": "Frutas",
+    "qty": 0,
+    "stock": 5
+})
+
+await containerMemory.save({
+    "title": "Naranja de Ombligo",
+    "price": 60,
+    "description": "Naranja de Ombligo, presentan unos gajos grandes y generosos en jugo, pero también en fibra insoluble, es decir carnosas, lo que las hace más aptas para naranja de mesa que para hacer zumos. También presentan la ventaja para este fin de que casi nunca tienen las incómodas pepitas que nos encontramos en otras variedades al morder.",
+    "thumbnail": "/assets/img/product/1.jpg",
+    "timestamp": "1644947630919",
+    "code": "Frutas",
+    "qty": 0,
+    "stock": 5
+})
+
+console.log(await containerMemory.getById(3))
+console.log(await containerMemory.deleteById(1))
+console.log(await containerMemory.getAll())
+await containerMemory.updateById(3, {title: 'PEPA LOCA', price: 800})
+console.log(await containerMemory.getById(3))
+console.log(await containerMemory.deleteAll())
+console.log(await containerMemory.getAll())
