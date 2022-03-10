@@ -44,11 +44,11 @@ server.on("error", error => console.log(`Error en servidor ${error}`))
  */
 let administrator = true
 
-let containerFile = new ProductsDaoFile()
+// let containerFile = new ProductsDaoFile()
 
-console.log(await containerFile.getAll())
-console.log(await containerFile.getMaxid())
-console.log(await containerFile.getById(3))
+// console.log(await containerFile.getAll())
+// console.log(await containerFile.getMaxid())
+// console.log(await containerFile.getById(3))
 
 // console.log(await containerFile.save({
 //     "title": "Brócoli",

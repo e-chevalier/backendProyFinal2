@@ -20,5 +20,9 @@
   "description": "",
   "devDependencies": {
     "nodemon": "^2.0.15"
+  },
+  "nodemonConfig": {
+    "ignore": ["*.json", "*.txt"],
+    "delay": 2500
   }
 }
