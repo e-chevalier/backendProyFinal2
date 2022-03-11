@@ -17,7 +17,7 @@ class Carrito {
     }
 
     async postCarritoProducto(req, res, next) {
-        let response = await carritoService.postCarritoProducto(req.params.id, req.body.id_prod)
+        let response = await carritoService.postCarritoProducto(req.params.id, req.body.id_prod, req.body.qty)
         res.json(response)
     }
 

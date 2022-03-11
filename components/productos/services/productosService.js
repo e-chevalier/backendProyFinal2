@@ -1,10 +1,10 @@
-import { contenedor, products } from '../../../containers/Global.js'
+import { productsContainer, productsMemory } from '../../../containers/Global.js'
 
 class Productos {
 
     async getProductos(id) {
         console.log(`GET ${id? "WITH ID => id: " + id : "ALL => "} -- productsRouters`)
-        let filteredArray = id ? products.filter(prod => prod.id == id) : products
+        let filteredArray = id ? productsMemory.filter(prod => prod.id == id) : productsMemory
 
         return({status: "OK", products: filteredArray, isEmpty: filteredArray.length ?  false : true })
     }
@@ -14,12 +14,12 @@ class Productos {
         let response = {}
 
         if (Object.keys(prod).length !== 0 && !Object.values(prod).includes('')) {
-            const max = products.reduce((a, b) => Number(a.id) > Number(b.id) ? a : b, { id: 0 })
+            const max = productsMemory.reduce((a, b) => Number(a.id) > Number(b.id) ? a : b, { id: 0 })
             prod.id = Number(max.id) + 1
             prod.timestamp = Date.now()
-            products.push(prod)
+            productsMemory.push(prod)
             //Save to file
-            contenedor.save(prod)
+            productsContainer.save(prod)
             response = { status: "ok", id: prod.id}
         } else {
             response = { error: 'Algunos campos del producto no fueron completados.' }
@@ -30,25 +30,25 @@ class Productos {
 
     async putProductos(id, prod) {
         console.log(`PUT => id: ${id} -- productsRouters`)
-        let index = products.findIndex(prod => prod.id == id)
+        let index = productsMemory.findIndex(prod => prod.id == id)
     
         if (index >= 0) {
             prod.id = id
-            products[index] = prod
+            productsMemory[index] = prod
             //Save to file
-            contenedor.updateById(id, prod)
+            productsContainer.updateById(id, prod)
         }
         return (index >= 0 ? { id: id } : { error: 'Producto no encontrado.' })
     }
 
     async deleteProductos(id) {
         console.log(`DELETE => id: ${id} -- productsRouters`)
-        let index = products.findIndex(prod => prod.id == id)
+        let index = productsMemory.findIndex(prod => prod.id == id)
     
         if (index >= 0) {
-            products.splice(index, 1)
+            productsMemory.splice(index, 1)
             //Save to file
-            contenedor.deleteById(id)
+            productsContainer.deleteById(id)
         }
         return(index >= 0 ? { id: id } : { error: 'Producto no encontrado.' })
     }

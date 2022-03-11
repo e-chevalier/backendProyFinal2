@@ -31,7 +31,7 @@ class ContenedorMongoDB {
 
         try {
             const max = Number(await this.getMaxid())
-            await this.db.create({ ...obj, id: max + 1 })
+            await this.db.create({ ...obj, id: max + 1, timestamp: Date.now()})
             return max + 1
 
         } catch (error) {

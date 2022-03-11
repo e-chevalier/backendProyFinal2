@@ -40,7 +40,7 @@ class ContenedorFile {
         try {
             const elements = await this.getAll()
             const max = Number(await this.getMaxid())
-            elements.push({...obj, id: max + 1})
+            elements.push({...obj, id: max + 1, timestamp: Date.now()})
             await fs.promises.writeFile(this.fileName, JSON.stringify(elements, null, 2))
             return max + 1
 

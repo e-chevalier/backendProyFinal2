@@ -28,7 +28,7 @@ class ContenedorMemory {
 
         try {
             const max = Number(await this.getMaxid())
-            this.storage.push({ ...newElement, id: max + 1 })
+            this.storage.push({ ...newElement, id: max + 1 , timestamp: Date.now()})
             return max + 1
 
         } catch (error) {
@@ -44,7 +44,7 @@ class ContenedorMemory {
      */
     async getById(id) {
         try {
-            const element = this.storage.find(e => e.id === id)
+            const element = this.storage.find(e => e.id === Number(id))
             return element ? element : null
 
         } catch (error) {
@@ -74,7 +74,7 @@ class ContenedorMemory {
     async deleteById(id) {
 
         try {
-            let index = this.storage.findIndex(e => e.id == id)
+            let index = this.storage.findIndex(e => e.id === Number(id))
 
             if (index >= 0) {
                 this.storage.splice(index, 1)
@@ -102,7 +102,7 @@ class ContenedorMemory {
 
     async updateById(id, newElement) {
         try {
-            let index = this.storage.findIndex(e => e.id == id)
+            let index = this.storage.findIndex(e => e.id === Number(id))
             if (index >= 0) {
                 this.storage[index] = {...this.storage[index], ...newElement}
             }

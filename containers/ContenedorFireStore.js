@@ -36,7 +36,7 @@ class ContenedorFireStore {
 
         try {
             const max = Number(await this.getMaxid())
-            await this.db.collection(this.collectionPath).add({ ...obj, id: max + 1 })
+            await this.db.collection(this.collectionPath).add({ ...obj, id: max + 1, timestamp: Date.now()})
                 .catch(err => console.log(err));
 
             return max + 1
