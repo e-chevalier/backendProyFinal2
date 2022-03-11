@@ -2,8 +2,9 @@ import { ContenedorMemory } from "../../containers/ContenedorMemory.js"
 
 class ProductsDaoMemory extends ContenedorMemory {
 
-    constructor(){
+    constructor(storage = []){
         super()
+        this.storage = storage
     }
 
 

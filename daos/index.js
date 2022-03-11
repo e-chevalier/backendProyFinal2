@@ -1,12 +1,13 @@
-import ProductsDaoFile from '../daos/products/ProductsDaoFile.js'
-import ProductsDaoMemory from '../daos/products/ProductsDaoMemory.js'
-import CartsDaoFile from '../daos/carts/CartsDaoFile.js'
-import CartsDaoMemory from '../daos/carts/CartsDaoMemory.js'
+import ProductsDaoFile from './products/ProductsDaoFile.js'
+import ProductsDaoMemory from './products/ProductsDaoMemory.js'
+import CartsDaoFile from './carts/CartsDaoFile.js'
+import CartsDaoMemory from './carts/CartsDaoMemory.js'
 /**
  * Container instance 
  */
 const productsContainer = new ProductsDaoFile()
-const productsMemory = await productsContainer.getAll()
+const productsMemory = new ProductsDaoMemory(await productsContainer.getAll())
+//const productsMemory = await productsContainer.getAll()
 //new ProductsDaoMemory()
 
 //const productsMemory = await productsContainer.getAll()
