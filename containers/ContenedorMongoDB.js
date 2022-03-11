@@ -3,7 +3,6 @@ class ContenedorMongoDB {
 
     constructor(db_collection) {
         this.db = db_collection
-        //this.collName = collectionName
     }
 
     /**
@@ -30,6 +29,7 @@ class ContenedorMongoDB {
     async save(obj) {
 
         try {
+            console.log(obj)
             const max = Number(await this.getMaxid())
             await this.db.create({ ...obj, id: max + 1, timestamp: Date.now()})
             return max + 1

@@ -14,4 +14,6 @@ const ProductsSchema = mongoose.Schema({
     qty:{type: Number, default: 0}
 })
 
-export const products = mongoose.model(productsCollection, ProductsSchema)
+const products = mongoose.model(productsCollection, ProductsSchema)
+
+export { products, ProductsSchema }

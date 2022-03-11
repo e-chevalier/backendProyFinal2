@@ -39,14 +39,24 @@ class Carrito {
         let cart = await cartsMemory.getById(id_cart)
         //let prod = productsMemory.find(prod => prod.id == id_prod)
         let prod = await productsMemory.getById(id_prod)
+        console.log("prod" + JSON.stringify(prod))
 
         let response = {}
 
         if (cart) {
             if (prod) {
-
+               
                 let index = cart.products.findIndex(prod => prod.id == id_prod)
-                index >= 0 ? cart.products[index] = { ...prod, qty: cart.products[index].qty + Number(qty) } : cart.products.push({ ...prod, qty: Number(qty) })
+                let newProd = {}
+
+                if (index >= 0) {
+                    newProd = Object.assign(prod, {qty: cart.products[index].qty + Number(qty)})
+                    cart.products[index] = newProd
+                } else {
+                    newProd = Object.assign(prod, {qty: Number(qty)})
+                    cart.products.push( newProd )
+                }
+                
                 //ADD PROD TO THE CART ON MEMORY CONTAINER
                 await cartsMemory.updateById(id_cart, { products: cart.products })
                 //Save to DAO Container
@@ -71,7 +81,9 @@ class Carrito {
         let index_prod = -1
 
         if (cart) {
-            index_prod = cart.products.findIndex(prod => prod.id == id_prod)
+            console.log(cart)
+            index_prod = cart.products.findIndex(prod => Number(prod.id) == Number(id_prod))
+            //console.log(index_prod)
             if (index_prod >= 0) {  // Prod id on cart
                 cart.products.splice(index_prod, 1) // Remove prod from cart
                 await cartsMemory.updateById(id_cart, { products: cart.products })

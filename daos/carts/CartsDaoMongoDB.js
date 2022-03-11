@@ -1,11 +1,11 @@
 import { ContenedorMongoDB } from '../../containers/ContenedorMongoDB.js'
+import * as modelCarts from '../../models/carts.js'
 
 class CartsDaoMongoDB extends ContenedorMongoDB {
 
-    constructor(db){
-        super(db)
+    constructor(){
+        super(modelCarts.carts)
     }
-
 
 }
 
