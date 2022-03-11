@@ -17,7 +17,7 @@ class Carrito {
 
         if (index >= 0) {
             //Save to DAO Container
-            cartsContainer.deleteById(id)
+            await cartsContainer.deleteById(id)
         }
 
         return (index >= 0 ? { status: "OK", description: `DELETE CART WITH ID: ${id}`, id: id } : { error: 'Carrito no encontrado.' })
@@ -39,7 +39,7 @@ class Carrito {
         let cart = await cartsMemory.getById(id_cart)
         //let prod = productsMemory.find(prod => prod.id == id_prod)
         let prod = await productsMemory.getById(id_prod)
-        console.log("prod" + JSON.stringify(prod))
+        //console.log("prod" + JSON.stringify(prod))
 
         let response = {}
 
@@ -56,7 +56,7 @@ class Carrito {
                     newProd = Object.assign(prod, {qty: Number(qty)})
                     cart.products.push( newProd )
                 }
-                
+
                 //ADD PROD TO THE CART ON MEMORY CONTAINER
                 await cartsMemory.updateById(id_cart, { products: cart.products })
                 //Save to DAO Container

@@ -22,22 +22,36 @@ import { connectMongodbAtlas } from '../utils/mongodbAtlas/mongodbAtlas.js'
 /**
  * Products Container instance 
  */
-// DAO FILE - PRODUCTS
-//const productsContainer = new ProductsDaoFile()
-await connectMongodbAtlas()
-const productsContainer = new ProductsDaoMongoDB()
-const productsMemory = new ProductsDaoMemory(await productsContainer.getAll())
-//const productsMemory = await productsContainer.getAll()
-//new ProductsDaoMemory()
 
-//const productsMemory = await productsContainer.getAll()
+// PRODUCTS DAO FILE
+//const productsContainer = new ProductsDaoFile()
+
+// PRODUCTS DAO MONGODB
+// await connectMongodbAtlas()
+// const productsContainer = new ProductsDaoMongoDB()
+
+// PRODUCTS DAO FIRESTORE
+const productsContainer = new ProductsDaoFireStore()
+
+// PRODUCTS DAO MEMORY
+const productsMemory = new ProductsDaoMemory(await productsContainer.getAll())
+
+
 
 /**
  *  Carts Container instance 
  */
-// DAO FILE - CARTS
+
+// CARTS DAO FILE
 //const cartsContainer = new CartsDaoFile()
-const cartsContainer = new CartsDaoMongoDB()
+
+// CARTS DAO MONGODB
+//const cartsContainer = new CartsDaoMongoDB()
+
+// CARTS DAO FIRESTORE
+const cartsContainer = new CartsDaoFireStore()
+
+// CARTS DAO MEMORY
 const cartsMemory = new CartsDaoMemory(await cartsContainer.getAll())
 
 

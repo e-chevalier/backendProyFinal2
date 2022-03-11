@@ -57,7 +57,7 @@ class Productos {
 
         if (index >= 0) {
             //Save to file
-            productsContainer.deleteById(id)
+            await productsContainer.deleteById(id)
         }
         return (index >= 0 ? { id: id } : { error: 'Producto no encontrado.' })
     }

@@ -54,7 +54,7 @@ class ContenedorFireStore {
      */
     async getById(id) {
         try {
-            const snapshot = await this.db.collection(this.collectionPath).where('id', '==', id).get()
+            const snapshot = await this.db.collection(this.collectionPath).where('id', '==', Number(id)).get()
                 .then(data => data.docs.map(prod => ({ id: prod.id, ...prod.data() })))
 
             let res = snapshot.length ? snapshot[0] : null
@@ -89,7 +89,7 @@ class ContenedorFireStore {
     async deleteById(id) {
 
         try {
-            const snapshot = await this.db.collection(this.collectionPath).where('id', '==', id).get()
+            const snapshot = await this.db.collection(this.collectionPath).where('id', '==', Number(id)).get()
             snapshot.forEach(doc => doc.ref.delete())
 
         } catch (error) {
@@ -143,7 +143,7 @@ class ContenedorFireStore {
 
     async updateById(id, prod) {
         try {
-            const snapshot = await this.db.collection(this.collectionPath).where('id', '==', id).get()
+            const snapshot = await this.db.collection(this.collectionPath).where('id', '==', Number(id)).get()
             snapshot.forEach(doc => doc.ref.update(prod))
 
         } catch (error) {
