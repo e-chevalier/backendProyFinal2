@@ -1,5 +1,5 @@
 import { Database } from '../config/databaseKnex.js'
-import { dataCarts, dataProducts } from '../config/mockups_data.js'
+import { dataProducts } from '../config/mockups_data.js'
 
 class ContenedorKnex {
 
@@ -15,10 +15,10 @@ class ContenedorKnex {
 
     insertData = async (table_name, data) => {
         try {
-            let response = {}
+            
             let existsTable = await this.db_knex.schema.hasTable(table_name);
             if (existsTable) {
-                response = await this.db_knex.from(table_name).insert(data);
+                await this.db_knex.from(table_name).insert(data);
                 //console.log(response);
             } else {
                 console.log("TABLE DONT EXISTS " + table_name)
@@ -40,7 +40,7 @@ class ContenedorKnex {
                         table.float("price"),
                         table.string("description", 1000),
                         table.string("thumbnail", 450),
-                        table.timestamp('timestamp'),
+                        table.bigInteger('timestamp'),
                         table.string("code"),
                         table.integer("stock"),
                         table.integer("qty")
@@ -61,10 +61,10 @@ class ContenedorKnex {
                 await this.db_knex.schema.createTable("carts", table => {
                     table.increments("_id").primary(),
                         table.bigInteger("id").unique(),
-                        table.timestamp('timestamp'),
+                        table.bigInteger('timestamp'),
                         table.json('products')
                 });
-                await this.insertData('carts', dataCarts)
+                //await this.insertData('carts', dataCarts)
             } else {
                 console.log(`Esta tabla ya existe: carts`)
             }
@@ -97,6 +97,11 @@ class ContenedorKnex {
 
         try {
             let max_id = await this.getMaxid()
+
+            if(obj.products && this.knex_options.client === 'mysql' ) {
+                obj = Object.assign(obj, {products: JSON.stringify(obj.products)})
+            }
+
             await this.insertData(this.table_name, { ...obj, id: Number(max_id) + 1 , timestamp: Date.now()})
             console.table(await this.db_knex.from(this.table_name))
             return max_id + 1
@@ -168,9 +173,14 @@ class ContenedorKnex {
 
     }
 
-    async updateById(id, prod) {
+    async updateById(id, obj) {
         try {
-            let response = await this.db_knex.from(this.table_name).where("id", "=", id).update(prod)
+
+            if(obj.products && this.knex_options.client === 'mysql' ) {
+                obj = Object.assign(obj, {products: JSON.stringify(obj.products)})
+            }
+
+            let response = await this.db_knex.from(this.table_name).where("id", "=", id).update(obj)
             console.table(await this.db_knex.from(this.table_name))
             return response
         } catch (error) {
