@@ -3,12 +3,14 @@ import ProductsDaoMemory from './products/ProductsDaoMemory.js'
 import ProductsDaoMongoDB from './products/ProductsDaoMongoDB.js'
 import ProductsDaoFireStore from './products/ProductsDaoFireStore.js'
 import ProductsDaoKnex from './products/ProductsDaoKnex.js'
+import ProductsDaoKnexMysql from './products/ProductsDaoKnexMysql.js'
 
 import CartsDaoFile from './carts/CartsDaoFile.js'
 import CartsDaoMemory from './carts/CartsDaoMemory.js'
 import CartsDaoMongoDB from './carts/CartsDaoMongoDB.js'
 import CartsDaoFireStore from './carts/CartsDaoFireStore.js'
 import CartsDaoKnex from './carts/CartsDaoKnex.js'
+import CartsDaoKnexMysql from './carts/CartsDaoKnexMysql.js'
 
 
 // KNEX
@@ -39,7 +41,7 @@ import { connectMongodbAtlas } from '../utils/mongodbAtlas/mongodbAtlas.js'
 //const productsContainer = new ProductsDaoFireStore()
 
 // PRODUCTS DAO KNEX MYSQL
-const productsContainer = new ProductsDaoKnex(config_db.mysql)
+const productsContainer = new ProductsDaoKnexMysql(config_db.mysql)
 await productsContainer.createTableProducts()
 
 // PRODUCTS DAO KNEX SQLITE3
@@ -49,7 +51,8 @@ await productsContainer.createTableProducts()
 // PRODUCTS DAO MEMORY
 const productsMemory = new ProductsDaoMemory(await productsContainer.getAll())
 
-
+// console.log("GET PRODUCTS")
+// console.log(await productsMemory.getAll())
 
 
 /**
@@ -66,7 +69,7 @@ const productsMemory = new ProductsDaoMemory(await productsContainer.getAll())
 //const cartsContainer = new CartsDaoFireStore()
 
 // CARTS DAO KNEX MYSQL
-const cartsContainer = new CartsDaoKnex(config_db.mysql)
+const cartsContainer = new CartsDaoKnexMysql(config_db.mysql)
 await cartsContainer.createTableCarts()
 
 // PRODUCTS DAO KNEX SQLITE3
