@@ -31,7 +31,7 @@ import { connectMongodbAtlas } from '../utils/mongodbAtlas/mongodbAtlas.js'
  */
 
 // PRODUCTS DAO FILE
-//const productsContainer = new ProductsDaoFile()
+const productsContainer = new ProductsDaoFile()
 
 // PRODUCTS DAO MONGODB
 // await connectMongodbAtlas()
@@ -41,8 +41,8 @@ import { connectMongodbAtlas } from '../utils/mongodbAtlas/mongodbAtlas.js'
 //const productsContainer = new ProductsDaoFireStore()
 
 // PRODUCTS DAO KNEX MYSQL
-const productsContainer = new ProductsDaoKnex(config_db.mysql)
-await productsContainer.createTableProducts()
+// const productsContainer = new ProductsDaoKnex(config_db.mysql)
+// await productsContainer.createTableProducts()
 
 // PRODUCTS DAO KNEX SQLITE3
 // const productsContainer = new ProductsDaoKnex(config_db.sqlite3)
@@ -60,17 +60,17 @@ const productsMemory = new ProductsDaoMemory(await productsContainer.getAll())
  */
 
 // CARTS DAO FILE
-//const cartsContainer = new CartsDaoFile()
+const cartsContainer = new CartsDaoFile()
 
 // CARTS DAO MONGODB
-//const cartsContainer = new CartsDaoMongoDB()
+// const cartsContainer = new CartsDaoMongoDB()
 
 // CARTS DAO FIRESTORE
 //const cartsContainer = new CartsDaoFireStore()
 
 // CARTS DAO KNEX MYSQL
-const cartsContainer = new CartsDaoKnex(config_db.mysql)
-await cartsContainer.createTableCarts()
+// const cartsContainer = new CartsDaoKnex(config_db.mysql)
+// await cartsContainer.createTableCarts()
 
 // PRODUCTS DAO KNEX SQLITE3
 // const cartsContainer = new CartsDaoKnex(config_db.sqlite3)

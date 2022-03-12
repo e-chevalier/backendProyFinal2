@@ -3,7 +3,7 @@ import { ContenedorFile } from "../../containers/ContenedorFile.js"
 class ProductsDaoFile extends ContenedorFile {
 
     constructor(){
-        super('productos.json')
+        super('./DB/productos.json')
     }
 
 
