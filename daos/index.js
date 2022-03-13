@@ -1,87 +1,106 @@
-import ProductsDaoFile from './products/ProductsDaoFile.js'
-import ProductsDaoMemory from './products/ProductsDaoMemory.js'
-import ProductsDaoMongoDB from './products/ProductsDaoMongoDB.js'
-import ProductsDaoFireStore from './products/ProductsDaoFireStore.js'
-import ProductsDaoKnex from './products/ProductsDaoKnex.js'
+const container_type = process.env.npm_config_container_type;
+console.log("Container Type Selected : " + container_type)
 
+async function dynamicImport(container_type) {
 
-import CartsDaoFile from './carts/CartsDaoFile.js'
-import CartsDaoMemory from './carts/CartsDaoMemory.js'
-import CartsDaoMongoDB from './carts/CartsDaoMongoDB.js'
-import CartsDaoFireStore from './carts/CartsDaoFireStore.js'
-import CartsDaoKnex from './carts/CartsDaoKnex.js'
+    // DAO MEMORY DEFAULT
+    const { default: ProductsDaoMemory } = await import('./products/ProductsDaoMemory.js')
+    const { default: CartsDaoMemory } = await import('./carts/CartsDaoMemory.js')
 
+    if (container_type.toUpperCase() === 'firestore'.toUpperCase()) {
+        console.log("Initializing container for Firestore")
+        const { default: ProductsDaoFireStore } = await import('./products/ProductsDaoFireStore.js')
+        const { default: CartsDaoFireStore } = await import('./carts/CartsDaoFireStore.js')
 
+        // PRODUCTS DAO FIRESTORE
+        const productsContainer = new ProductsDaoFireStore()
+        // CARTS DAO FIRESTORE
+        const cartsContainer = new CartsDaoFireStore()
 
-// KNEX
-import { config_db } from '../config/databaseKnex.js'
+        // PRODUCTS DAO MEMORY
+        const productsMemory = new ProductsDaoMemory(await productsContainer.getAll())
+        const cartsMemory = new CartsDaoMemory(await cartsContainer.getAll())
 
-// MONOGODB ATLAS CONNECTION
-import { connectMongodbAtlas } from '../utils/mongodbAtlas/mongodbAtlas.js'
+        return { productsContainer, productsMemory, cartsContainer, cartsMemory }
 
-// // FIRESTORE
-// import { db_firestore } from '../utils/firestore/firestore.js'
+    } else if (container_type.toUpperCase() === 'mysql'.toUpperCase()) {
+        console.log("Initializing container for Mysql")
+        // KNEX Config
+        const { config_db } = await import('../config/databaseKnex.js')
+        const { default: ProductsDaoKnex } = await import('./products/ProductsDaoKnex.js')
+        const { default: CartsDaoKnex } = await import('./carts/CartsDaoKnex.js')
 
-// import * as modelProducts from '../models/products.js'
-// import * as modelCarts from '../models/carts.js'
+        // PRODUCTS DAO KNEX MYSQL
+        const productsContainer = new ProductsDaoKnex(config_db.mysql)
+        await productsContainer.createTableProducts()
+        // CARTS DAO KNEX MYSQL
+        const cartsContainer = new CartsDaoKnex(config_db.mysql)
+        await cartsContainer.createTableCarts()
 
+        // PRODUCTS DAO MEMORY
+        const productsMemory = new ProductsDaoMemory(await productsContainer.getAll())
+        const cartsMemory = new CartsDaoMemory(await cartsContainer.getAll())
 
-/**
- * Products Container instance 
- */
+        return { productsContainer, productsMemory, cartsContainer, cartsMemory }
 
-// PRODUCTS DAO FILE
-const productsContainer = new ProductsDaoFile()
+    } else if (container_type.toUpperCase() === 'sqlite3'.toUpperCase()) {
+        console.log("Initializing container for Sqlite3")
+        // KNEX Config
+        const { config_db } = await import('../config/databaseKnex.js')
+        const { default: ProductsDaoKnex } = await import('./products/ProductsDaoKnex.js')
+        const { default: CartsDaoKnex } = await import('./carts/CartsDaoKnex.js')
 
-// PRODUCTS DAO MONGODB
-// await connectMongodbAtlas()
-// const productsContainer = new ProductsDaoMongoDB()
+        // PRODUCTS DAO KNEX SQLITE3
+        const productsContainer = new ProductsDaoKnex(config_db.sqlite3)
+        await productsContainer.createTableProducts()
+        // CARTS DAO KNEX SQLITE3
+        const cartsContainer = new CartsDaoKnex(config_db.sqlite3)
+        await cartsContainer.createTableCarts()
 
-// PRODUCTS DAO FIRESTORE
-//const productsContainer = new ProductsDaoFireStore()
+        // PRODUCTS DAO MEMORY
+        const productsMemory = new ProductsDaoMemory(await productsContainer.getAll())
+        const cartsMemory = new CartsDaoMemory(await cartsContainer.getAll())
 
-// PRODUCTS DAO KNEX MYSQL
-// const productsContainer = new ProductsDaoKnex(config_db.mysql)
-// await productsContainer.createTableProducts()
+        return { productsContainer, productsMemory, cartsContainer, cartsMemory }
 
-// PRODUCTS DAO KNEX SQLITE3
-// const productsContainer = new ProductsDaoKnex(config_db.sqlite3)
-// await productsContainer.createTableProducts()
+    } else if (container_type.toUpperCase() === 'mongodb'.toUpperCase()) {
+        console.log("Initializing container for MongoDB Atlas")
+        const { default: ProductsDaoMongoDB } = await import('./products/ProductsDaoMongoDB.js')
+        const { default: CartsDaoMongoDB } = await import('./carts/CartsDaoMongoDB.js')
+        // MONOGODB ATLAS CONNECTION
+        const { connectMongodbAtlas } = await import('../utils/mongodbAtlas/mongodbAtlas.js')
 
-// PRODUCTS DAO MEMORY
-const productsMemory = new ProductsDaoMemory(await productsContainer.getAll())
+        // Connnect to dabase
+        await connectMongodbAtlas()
+        // PRODUCTS DAO MONGODB
+        const productsContainer = new ProductsDaoMongoDB()
+        // CARTS DAO MONGODB
+        const cartsContainer = new CartsDaoMongoDB()
 
-// console.log("GET PRODUCTS")
-// console.log(await productsMemory.getAll())
+        // PRODUCTS DAO MEMORY
+        const productsMemory = new ProductsDaoMemory(await productsContainer.getAll())
+        const cartsMemory = new CartsDaoMemory(await cartsContainer.getAll())
 
+        return { productsContainer, productsMemory, cartsContainer, cartsMemory }
 
-/**
- *  Carts Container instance 
- */
+    } else { // default File
+        console.log("Initializing container for File")
+        const { default: ProductsDaoFile } = await import('./products/ProductsDaoFile.js')
+        const { default: CartsDaoFile } = await import('./carts/CartsDaoFile.js')
 
-// CARTS DAO FILE
-const cartsContainer = new CartsDaoFile()
+        // PRODUCTS DAO FILE
+        const productsContainer = new ProductsDaoFile()
+        // CARTS DAO FILE
+        const cartsContainer = new CartsDaoFile()
 
-// CARTS DAO MONGODB
-// const cartsContainer = new CartsDaoMongoDB()
+        // PRODUCTS DAO MEMORY
+        const productsMemory = new ProductsDaoMemory(await productsContainer.getAll())
+        const cartsMemory = new CartsDaoMemory(await cartsContainer.getAll())
 
-// CARTS DAO FIRESTORE
-//const cartsContainer = new CartsDaoFireStore()
+        return { productsContainer, productsMemory, cartsContainer, cartsMemory }
+    }
+}
 
-// CARTS DAO KNEX MYSQL
-// const cartsContainer = new CartsDaoKnex(config_db.mysql)
-// await cartsContainer.createTableCarts()
+const { productsContainer, productsMemory, cartsContainer, cartsMemory } = await dynamicImport(container_type)
 
-// PRODUCTS DAO KNEX SQLITE3
-// const cartsContainer = new CartsDaoKnex(config_db.sqlite3)
-// await cartsContainer.createTableCarts()
-
-// CARTS DAO MEMORY
-const cartsMemory = new CartsDaoMemory(await cartsContainer.getAll())
-
-
-
-console.log("GET CARTS")
-console.log(await cartsMemory.getAll())
-
-export {productsContainer, productsMemory, cartsContainer, cartsMemory}
+export { productsContainer, productsMemory, cartsContainer, cartsMemory }
