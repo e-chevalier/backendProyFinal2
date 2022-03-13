@@ -1,5 +1,4 @@
 import mongoose from "mongoose"
-//import { ProductsSchema } from './products.js'
 
 const cartsCollection = 'carts'
 

@@ -31,7 +31,7 @@ class ContenedorMongoDB {
         try {
             console.log(obj)
             const max = Number(await this.getMaxid())
-            await this.db.create({ ...obj, id: max + 1, timestamp: Date.now()})
+            await this.db.create({ ...obj, id: max + 1, timestamp: Date.now() })
             return max + 1
 
         } catch (error) {
@@ -63,8 +63,8 @@ class ContenedorMongoDB {
      */
     async getAll() {
         try {
-           
-            let res = await this.db.find({},{ '_id': 0, '__v': 0 })
+
+            let res = await this.db.find({}, { '_id': 0, '__v': 0 })
             return res
 
         } catch (error) {
@@ -76,10 +76,10 @@ class ContenedorMongoDB {
      * Método que elimina del archivo el objeto indicado en el parametro ID
      * @param {*} id 
      */
-    async deleteById( id ) {
+    async deleteById(id) {
 
         try {
-            await this.db.deleteOne({'id': id})
+            await this.db.deleteOne({ 'id': id })
         } catch (error) {
             console.log(error)
         }
@@ -91,7 +91,7 @@ class ContenedorMongoDB {
      */
     async deleteAll() {
         try {
-            await this.db.deleteMany({})           
+            await this.db.deleteMany({})
         } catch (error) {
             console.log(error)
         }
@@ -100,9 +100,9 @@ class ContenedorMongoDB {
 
     async updateById(id, prod) {
         try {
-            await this.db.findOneAndUpdate({'id': id}, prod)
+            await this.db.findOneAndUpdate({ 'id': id }, prod)
         } catch (error) {
-            console.log(error)   
+            console.log(error)
         }
     }
 

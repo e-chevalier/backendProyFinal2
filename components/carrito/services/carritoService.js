@@ -37,24 +37,22 @@ class Carrito {
         console.log(`POST Carrito Add PROD  => idCart: ${id_cart} id_prod: ${id_prod} qty: ${qty}-- cartsRouters`)
 
         let cart = await cartsMemory.getById(id_cart)
-        //let prod = productsMemory.find(prod => prod.id == id_prod)
         let prod = await productsMemory.getById(id_prod)
-        //console.log("prod" + JSON.stringify(prod))
 
         let response = {}
 
         if (cart) {
             if (prod) {
-               
+
                 let index = cart.products.findIndex(prod => prod.id == id_prod)
                 let newProd = {}
 
                 if (index >= 0) {
-                    newProd = Object.assign(prod, {qty: cart.products[index].qty + Number(qty)})
+                    newProd = Object.assign(prod, { qty: cart.products[index].qty + Number(qty) })
                     cart.products[index] = newProd
                 } else {
-                    newProd = Object.assign(prod, {qty: Number(qty)})
-                    cart.products.push( newProd )
+                    newProd = Object.assign(prod, { qty: Number(qty) })
+                    cart.products.push(newProd)
                 }
 
                 //ADD PROD TO THE CART ON MEMORY CONTAINER

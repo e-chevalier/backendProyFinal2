@@ -6,9 +6,6 @@ const DB_DOMAIN = config.db_domain
 const DB_NAME = config.db_name
 const DB_USER = config.db_user
 
-
-
-
 const connectMongodbAtlas = async () => {
     try {
         const URL = `mongodb+srv://${DB_USER}:${DB_PASS}@${DB_DOMAIN}/${DB_NAME}?retryWrites=true&w=majority`

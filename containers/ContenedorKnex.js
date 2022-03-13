@@ -19,7 +19,6 @@ class ContenedorKnex {
             let existsTable = await this.db_knex.schema.hasTable(table_name);
             if (existsTable) {
                 await this.db_knex.from(table_name).insert(data);
-                //console.log(response);
             } else {
                 console.log("TABLE DONT EXISTS " + table_name)
             }
@@ -103,7 +102,7 @@ class ContenedorKnex {
             }
 
             await this.insertData(this.table_name, { ...obj, id: Number(max_id) + 1 , timestamp: Date.now()})
-            console.table(await this.db_knex.from(this.table_name))
+            //console.table(await this.db_knex.from(this.table_name))
             return max_id + 1
 
         } catch (error) {
@@ -134,7 +133,7 @@ class ContenedorKnex {
     async getAll() {
         try {
             let res = await this.db_knex.from(this.table_name)
-            console.table(await this.db_knex.from(this.table_name))
+            //console.table(await this.db_knex.from(this.table_name))
             return res
 
         } catch (error) {
@@ -181,7 +180,7 @@ class ContenedorKnex {
             }
 
             let response = await this.db_knex.from(this.table_name).where("id", "=", id).update(obj)
-            console.table(await this.db_knex.from(this.table_name))
+            //console.table(await this.db_knex.from(this.table_name))
             return response
         } catch (error) {
             console.log(error)
