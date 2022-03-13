@@ -1,4 +1,4 @@
-const container_type = process.env.npm_config_container_type;
+const container_type = process.env.npm_config_container_type
 console.log("Container Type Selected : " + container_type)
 
 async function dynamicImport(container_type) {
