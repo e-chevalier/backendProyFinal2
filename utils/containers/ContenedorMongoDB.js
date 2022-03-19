@@ -12,7 +12,6 @@ class ContenedorMongoDB {
         try {
             let tmp = await this.db.find({}, { 'id': 1, '_id': 0 }).sort({ id: -1 }).limit(1)
             let res = tmp.length ? tmp[0].id : 0
-            console.log(res)
             return res
 
         } catch (error) {
@@ -28,7 +27,6 @@ class ContenedorMongoDB {
     async save(obj) {
 
         try {
-            console.log(obj)
             const max = Number(await this.getMaxid())
             await this.db.create({ ...obj, id: max + 1, timestamp: Date.now() })
             return max + 1

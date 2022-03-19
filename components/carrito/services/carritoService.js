@@ -27,8 +27,6 @@ class Carrito {
         console.log(`GET Productos => id: ${id} -- cartsRouters`)
 
         let cart = await cartsMemory.getById(id)
-        console.log(await cartsMemory.getAll())
-        console.log(cart)
 
         return (cart ? { status: "OK", description: `GET CART WITH ID: ${id}`, cart: cart } : { error: 'Carrito no encontrado.' })
     }
@@ -79,9 +77,9 @@ class Carrito {
         let index_prod = -1
 
         if (cart) {
-            console.log(cart)
+
             index_prod = cart.products.findIndex(prod => Number(prod.id) == Number(id_prod))
-            //console.log(index_prod)
+            
             if (index_prod >= 0) {  // Prod id on cart
                 cart.products.splice(index_prod, 1) // Remove prod from cart
                 await cartsMemory.updateById(id_cart, { products: cart.products })
