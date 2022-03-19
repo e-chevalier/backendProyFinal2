@@ -3,51 +3,71 @@ import { productsContainer, productsMemory } from '../../../daos/index.js'
 class Productos {
 
     async getProductos(id) {
-        console.log(`GET ${id ? "WITH ID => id: " + id : "ALL => "} -- productsRouters`)
-        let res = id ? [await productsMemory.getById(id)] : await productsMemory.getAll()
+        try {
+            console.log(`GET ${id ? "WITH ID => id: " + id : "ALL => "} -- productsRouters`)
+            let res = id ? [await productsMemory.getById(id)] : await productsMemory.getAll()
 
-        return ({ status: "OK", products: res, isEmpty: res.length ? false : true })
+            return ({ status: "OK", products: res, isEmpty: res.length ? false : true })
+
+        } catch (error) {
+            console.log(error)
+        }
     }
 
     async postProductos(prod) {
-        console.log(`POST -- productsRouters`)
-        let response = {}
+        try {
+            console.log(`POST -- productsRouters`)
+            let response = {}
 
-        if (Object.keys(prod).length !== 0 && !Object.values(prod).includes('')) {
+            if (Object.keys(prod).length !== 0 && !Object.values(prod).includes('')) {
 
-            let prodID = await productsMemory.save(prod)
-            //Save to file
-            productsContainer.save(prod)
-            response = { status: "ok", id: prodID }
-        } else {
-            response = { error: 'Algunos campos del producto no fueron completados.' }
+                let prodID = await productsMemory.save(prod)
+                //Save to file
+                productsContainer.save(prod)
+                response = { status: "ok", id: prodID }
+            } else {
+                response = { error: 'Algunos campos del producto no fueron completados.' }
+            }
+
+            return (response)
+
+        } catch (error) {
+            console.log(error)
         }
-
-        return (response)
     }
 
     async putProductos(id, prod) {
-        console.log(`PUT => id: ${id} -- productsRouters`)
-        let exists = await productsMemory.getById(id)
+        try {
+            console.log(`PUT => id: ${id} -- productsRouters`)
+            let exists = await productsMemory.getById(id)
 
-        if (exists) {
-            await productsMemory.updateById(id, prod)
-            //Save to file
-            productsContainer.updateById(id, prod)
+            if (exists) {
+                await productsMemory.updateById(id, prod)
+                //Save to file
+                productsContainer.updateById(id, prod)
+            }
+
+            return (exists ? { id: id } : { error: `Producto no encontrado: ${id}` })
+
+        } catch (error) {
+            console.log(error)
         }
-
-        return (exists ? { id: id } : { error: `Producto no encontrado: ${id}` })
     }
 
     async deleteProductos(id) {
-        console.log(`DELETE => id: ${id} -- productsRouters`)
-        let index = await productsMemory.deleteById(id)
+        try {
+            console.log(`DELETE => id: ${id} -- productsRouters`)
+            let index = await productsMemory.deleteById(id)
 
-        if (index >= 0) {
-            //Save to file
-            await productsContainer.deleteById(id)
+            if (index >= 0) {
+                //Save to file
+                await productsContainer.deleteById(id)
+            }
+            return (index >= 0 ? { id: id } : { error: 'Producto no encontrado.' })
+
+        } catch (error) {
+            console.log(error)
         }
-        return (index >= 0 ? { id: id } : { error: 'Producto no encontrado.' })
     }
 }
 
