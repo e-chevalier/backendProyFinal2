@@ -1,5 +1,5 @@
-import { Database } from '../config/databaseKnex.js'
-import { dataProducts } from '../config/mockups_data.js'
+import { Database } from '../../config/databaseKnex.js'
+import { dataProducts } from '../../config/mockups_data.js'
 
 class ContenedorKnex {
 

@@ -1,4 +1,4 @@
-import { ContenedorFireStore } from "../../containers/ContenedorFireStore.js"
+import { ContenedorFireStore } from "../../utils/containers/ContenedorFireStore.js"
 import { db_firestore } from '../../utils/firestore/firestore.js'
 
 class CartsDaoFireStore extends ContenedorFireStore {

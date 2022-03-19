@@ -1,4 +1,4 @@
-import { ContenedorKnex } from "../../containers/ContenedorKnex.js"
+import { ContenedorKnex } from "../../utils/containers/ContenedorKnex.js"
 
 class CartsDaoKnex extends ContenedorKnex {
 

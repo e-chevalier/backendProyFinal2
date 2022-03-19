@@ -1,4 +1,4 @@
-import { ContenedorMongoDB } from '../../containers/ContenedorMongoDB.js'
+import { ContenedorMongoDB } from '../../utils/containers/ContenedorMongoDB.js'
 import * as modelProducts from '../../models/products.js'
 
 class ProductsDaoMongoDB extends ContenedorMongoDB {

@@ -1,4 +1,3 @@
-
 class ContenedorMongoDB {
 
     constructor(db_collection) {

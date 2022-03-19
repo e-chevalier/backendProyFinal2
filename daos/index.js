@@ -1,5 +1,9 @@
-const container_type = process.env.npm_config_container_type
+const container_type = process.env.npm_config_container_type ? process.env.npm_config_container_type : 'File'
+console.log("------------------ OPCIONES DE CONTENEDOR --------------------------------")
+console.log("npm run dev --container_type=[file, firestore, mongodb, mysql, sqlite3]")
+console.log("--------------------------------------------------------------------------")
 console.log("Container Type Selected : " + container_type)
+
 
 async function dynamicImport(container_type) {
 
